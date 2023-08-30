@@ -9,3 +9,5 @@ node_modules
 
 # Ignore built files
 build
+
+package-lock.json
