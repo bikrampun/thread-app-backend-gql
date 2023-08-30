@@ -13,11 +13,13 @@ async function startApolloServer() {
     typeDefs: `
         type Query {
             hello: String
+            sayHello(name: String): String
         }
     `,
     resolvers: {
       Query: {
         hello: () => "Hello world! This is GraphQL server",
+        sayHello: (_: any, { name }: {name: string}) => `Hello ${name}!`,
       },
     },
   });
