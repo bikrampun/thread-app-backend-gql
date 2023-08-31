@@ -13,3 +13,19 @@ build
 package-lock.json
 
 postgres-data
+
+# ignore key
+*.pem
+
+# Ignore built files
+build
+
+# ignore test converage
+coverage
+
+# Environment varibles
+*.env
+*.env.test
+
+# File generated in macOS
+.DS_Store

@@ -2,6 +2,11 @@ import express from "express";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 
+import * as dotenv from "dotenv";
+
+dotenv.config() // Load the environment variables
+console.log(`The connection URL is ${process.env.DATABASE_URL}`)
+
 async function startApolloServer() {
   const app = express();
   const port = Number(process.env.PORT) || 3000;
