@@ -3,9 +3,10 @@ import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 
 import * as dotenv from "dotenv";
+import { prismaClient } from "./lib/db";
 
-dotenv.config() // Load the environment variables
-console.log(`The connection URL is ${process.env.DATABASE_URL}`)
+dotenv.config(); // Load the environment variables
+console.log(`The connection URL is ${process.env.DATABASE_URL}`);
 
 async function startApolloServer() {
   const app = express();
@@ -20,11 +21,41 @@ async function startApolloServer() {
             hello: String
             sayHello(name: String): String
         }
+        type Mutation {
+          createUser(firstName: String!, lastName: String!, email: String!, password: String!): Boolean!
+        }
     `,
     resolvers: {
       Query: {
         hello: () => "Hello world! This is GraphQL server",
-        sayHello: (_: any, { name }: {name: string}) => `Hello ${name}!`,
+        sayHello: (_: any, { name }: { name: string }) => `Hello ${name}!`,
+      },
+      Mutation: {
+        createUser: async (
+          _: any,
+          {
+            firstName,
+            lastName,
+            email,
+            password,
+          }: {
+            firstName: string;
+            lastName: string;
+            email: string;
+            password: string;
+          }
+        ) => {
+          await prismaClient.user.create({
+            data: {
+              firstName,
+              lastName,
+              email,
+              password,
+              salt: "random_salt",
+            },
+          });
+          return true;
+        },
       },
     },
   });
